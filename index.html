@@ -49,9 +49,8 @@
             else {
                 document.getElementById("time-left").innerText = "0" + min.toString() + ":00";
             }
-            // document.getElementById("time-left").innerText = document.getElementById("session-length").value;
-            // document.getElementById("time-left").innerText += ":00"; 
         }
+        
         function decrementBreak() {
             let num = parseInt(document.getElementById("break-length").value);
             if(num > 1) {
