@@ -31,6 +31,8 @@
             document.getElementById("time-left").innerText = "25:00";
             // Reset timer label
             document.getElementById("timer-label").innerText = "GO";
+            // Pause audio
+            pause();
         }
         function updateBreak() {
             let min = parseInt(document.getElementById("break-length").value);
@@ -105,6 +107,8 @@
             let time = document.getElementById("time-left").innerText;
 
             if(time == "00:00") {
+                play();
+
                 changeMode();
                 time = document.getElementById("time-left").innerText;
                 timer("restart");
@@ -170,7 +174,17 @@
                 updateSession();
             }
         }
+        function play() {
+            let audio = document.getElementById("beep");
+            audio.play();
+        }
+        function pause() {
+            let audio = document.getElementById("beep");
+            audio.pause();
+            audio.load();
+        }
     </script>
+    <audio id="beep" class="clip" src="./audio/J.Cole - Work Out, Clip.mp3"></audio>
   </head>
 
   <body>
@@ -184,50 +198,84 @@
             <div class='col text-center'>
 
                 <div class="card">
-                    <div class="card-body">
-                        <h1 class="card-title">Pomodoro Timer</h1>
-                        <p class="card-text">
+                    <div class="card-body container-fluid bg-primary">
+                        <div class="row">
+                            <div class="col-3 text-start">
+                                <h3 class="card-title">Interval <br> Timer</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 offset-4">
+                                <div class="border border-light rounded-circle">
+                                    <br><br><br><br><br><br>
+                                    <h1 id="time-left" >25:00</h1>
+                                    <br><br><br><br><br><br>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <h1 id="timer-label">GO</h1>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button id="start_stop" type="button" class="btn btn-outline-light" onclick="timer()">
+                                    <i class="bi bi-play"></i>
+                                </button>
+                                <button id="reset" type="button" class="btn btn-outline-light" onclick="reset()">
+                                    <i class="bi bi-arrow-clockwise"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-1 offset-4">
+                                <h4 id='session-label'>Work (min)</h4>  
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group input-group-lg">
+                                    <input 
+                                        id="session-length" type="number" class="form-control" value="25" 
+                                        onchange="updateSession()" onkeyup="updateSession()" 
+                                        min="1" max="60" style="text-align:center">
+                                </div>  
+                            </div>
+                            <div class="col-1">
+                                <div class='btn-group-vertical btn-group-sm' style="width:100%">
+                                    <button id="session-increment" type="button" class="btn btn-outline-light" onclick="incrementSession()">
+                                        <i class="bi bi-chevron-up"></i>
+                                    </button>
+                                    <button id="session-decrement" type="button" class="btn btn-outline-light" onclick="decrementSession()">
+                                        <i class="bi bi-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-1 offset-4">
+                                <h4 id='break-label'>Rest (min)</h4>  
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group input-group-lg">
+                                    <input id="break-length" type="number" class="form-control" value="5" min="1" max="60" style="text-align:center">
+                                </div>  
+                            </div>
+                            <div class="col-1">
+                                <div class='btn-group-vertical btn-group-sm' style="width:100%">
+                                    <button id="break-increment" type="button" class="btn btn-outline-light" onclick="incrementBreak()">
+                                        <i class="bi bi-chevron-up"></i>
+                                    </button>
+                                    <button id="break-decrement" type="button" class="btn btn-outline-light" onclick="decrementBreak()">
+                                        <i class="bi bi-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
 
-                            <div id="time-left">25:00</div>
-                            <!-- <time id="time-left">25:00</time> -->
-
-                            <div id="timer-label">GO</div>
-                            <button id="start_stop" type="button" class="btn btn-outline-primary" onclick="timer()">
-                                <i class="bi bi-play"></i>
-                            </button>
-                            <button id="reset" type="button" class="btn btn-outline-primary" onclick="reset()">
-                                <i class="bi bi-arrow-clockwise"></i>
-                            </button>
-                        </p>
-                    </div>
-                </div>
-
-                <div id='break'>
-                    <div id='break-label'>Rest</div>
-
-                    <input id="break-length" type="number" class="form-control" value="5" min="1" max="60">
-
-                    <div class='btn-group-vertical'>
-                        <button id="break-increment" type="button" class="btn btn-outline-primary" onclick="incrementBreak()">
-                            <i class="bi bi-chevron-up"></i>
-                        </button>
-                        <button id="break-decrement" type="button" class="btn btn-outline-primary" onclick="decrementBreak()">
-                            <i class="bi bi-chevron-down"></i>
-                        </button>
-                    </div>
-                </div>
-                <div id='session'>
-                    <div id='session-label'>Work</div>
-
-                    <input id="session-length" type="number" class="form-control" value="25" onchange="updateSession()" onkeyup="updateSession()" min="1" max="60">
-
-                    <div class='btn-group-vertical'>
-                        <button id="session-increment" type="button" class="btn btn-outline-primary" onclick="incrementSession()">
-                            <i class="bi bi-chevron-up"></i>
-                        </button>
-                        <button id="session-decrement" type="button" class="btn btn-outline-primary" onclick="decrementSession()">
-                            <i class="bi bi-chevron-down"></i>
-                        </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
